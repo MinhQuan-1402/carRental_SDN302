@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách xe – CarRental</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fefdfb;
+            --surface: #ffffff;
+            --border: #ebe7e2;
+            --text: #1a1816;
+            --muted: #6b6560;
+            --accent: #c2410c;
+            --accent-soft: #fff7ed;
+            --success: #15803d;
+            --warn: #a16207;
+            --danger: #b91c1c;
+            --radius: 14px;
+            --shadow: 0 4px 20px rgba(26, 24, 22, 0.06);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .bar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ea580c, #c2410c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            font-weight: 700;
+        }
+
+        .brand-text { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+        .brand-text span { color: var(--muted); font-weight: 500; }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav a {
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--muted);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .nav a:hover { background: var(--accent-soft); color: var(--accent); }
+        .nav a.active { background: var(--accent-soft); color: var(--accent); }
+
+        .main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 32px 24px 48px;
+        }
+
+        .page-head {
+            margin-bottom: 24px;
+        }
+
+        .page-head h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .page-head p {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .table-wrap {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--muted);
+            background: #fafaf9;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: #fafaf9; }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-available {
+            background: #dcfce7;
+            color: var(--success);
+        }
+
+        .status-rented {
+            background: #fef9c3;
+            color: var(--warn);
+        }
+
+        .status-maintenance {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+
+        .empty {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--muted);
+        }
+
+        .empty strong { color: var(--text); display: block; margin-bottom: 6px; }
+
+        .form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+
+        .form-card h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 14px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--muted);
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ea580c, #c2410c);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .msg {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+
+        .msg.success { background: #dcfce7; color: var(--success); }
+        .msg.error { background: #fee2e2; color: var(--danger); }
+    </style>
+</head>
+<body>
+    <header class="bar">
+        <div class="brand">
+            <div class="brand-icon">CR</div>
+            <div class="brand-text">CarRental <span>· Thuê xe</span></div>
+        </div>
+        <nav class="nav">
+            <a href="/">Trang chủ</a>
+            <a href="/cars" class="active">Xe</a>
+            <a href="/bookings">Đặt xe</a>
+            <a href="/login">Đăng nhập</a>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="page-head">
+            <h1>Danh sách xe</h1>
+ 
+        </div>
+
+        <div class="form-card">
+            <h2>➕ Thêm xe mới</h2>
+            <form id="addCarForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Biển số *</label>
+                        <input type="text" name="carNumber" placeholder="VD: 51A-12345" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Số chỗ *</label>
+                        <input type="number" name="capacity" min="1" placeholder="4" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Trạng thái</label>
+                        <select name="status">
+                            <option value="available">available</option>
+                            <option value="rented">rented</option>
+                            <option value="maintenance">maintenance</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Giá/ngày (VND) *</label>
+                        <input type="number" name="pricePerDay" min="0" placeholder="500000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tiện ích (cách nhau bằng dấu phẩy)</label>
+                        <input type="text" name="features" placeholder="Điều hòa, GPS, Bluetooth">
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button type="submit" class="btn btn-primary">Lưu xe vào DB</button>
+                    </div>
+                </div>
+                <div id="carMsg"></div>
+            </form>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Biển số</th>
+                        <th>Số chỗ</th>
+                        <th>Trạng thái</th>
+                        <th>Giá/ngày</th>
+                        <th>Tiện ích</th>
+                    </tr>
+                </thead>
+                <tbody id="carsTable">
+                    <tr>
+                        <td colspan="5" class="empty">
+                            <strong>Đang tải...</strong>
+                            Đang gọi /api/cars
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        function getAuthHeaders() {
+            const token = localStorage.getItem('carRental_token');
+            const h = { 'Content-Type': 'application/json' };
+            if (token) h['Authorization'] = 'Bearer ' + token;
+            return h;
+        }
+        function loadCars() {
+            fetch('/api/cars')
+                .then(r => r.json())
+                .then(cars => {
+                    const tbody = document.getElementById('carsTable');
+                    if (!Array.isArray(cars) || cars.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="5" class="empty"><strong>Chưa có xe.</strong> Dùng form trên để thêm xe.</td></tr>';
+                        return;
+                    }
+                    tbody.innerHTML = cars.map(car => `
+                        <tr>
+                            <td><strong>${car.carNumber}</strong></td>
+                            <td>${car.capacity}</td>
+                            <td><span class="status status-${car.status || 'available'}">${car.status}</span></td>
+                            <td>${Number(car.pricePerDay || 0).toLocaleString('vi-VN')} VND</td>
+                            <td>${Array.isArray(car.features) && car.features.length ? car.features.join(', ') : '—'}</td>
+                        </tr>
+                    `).join('');
+                })
+                .catch(() => {
+                    document.getElementById('carsTable').innerHTML = '<tr><td colspan="5" class="empty"><strong>Lỗi tải dữ liệu.</strong> Kiểm tra server và MongoDB.</td></tr>';
+                });
+        }
+
+        loadCars();
+
+        document.getElementById('addCarForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const msgEl = document.getElementById('carMsg');
+            const fd = new FormData(this);
+            const featuresStr = (fd.get('features') || '').trim();
+            const features = featuresStr ? featuresStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+            const body = {
+                carNumber: fd.get('carNumber').trim(),
+                capacity: parseInt(fd.get('capacity'), 10),
+                status: fd.get('status'),
+                pricePerDay: parseInt(fd.get('pricePerDay'), 10),
+                features: features
+            };
+
+            fetch('/api/cars', {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: JSON.stringify(body)
+            })
+                .then(r => {
+                    if (r.status === 401) {
+                        if (confirm('Bạn cần đăng nhập để thêm xe. Chuyển đến trang đăng nhập?')) window.location.href = '/login';
+                        return null;
+                    }
+                    return r.json();
+                })
+                .then(data => {
+                    if (!data) return;
+                    if (data.message && data.message.includes('already exists')) {
+                        msgEl.className = 'msg error';
+                        msgEl.textContent = 'Biển số này đã tồn tại.';
+                        return;
+                    }
+                    if (data.message && data.message.includes('token')) {
+                        msgEl.className = 'msg error';
+                        msgEl.textContent = data.message + ' <a href="/login">Đăng nhập</a>';
+                        return;
+                    }
+                    msgEl.className = 'msg success';
+                    msgEl.textContent = 'Đã lưu xe vào database.';
+                    this.reset();
+                    loadCars();
+                })
+                .catch(() => {
+                    msgEl.className = 'msg error';
+                    msgEl.textContent = 'Lỗi gửi dữ liệu.';
+                });
+        });
+    </script>
+</body>
+</html>

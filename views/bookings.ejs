@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt xe – CarRental</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fefdfb;
+            --surface: #ffffff;
+            --border: #ebe7e2;
+            --text: #1a1816;
+            --muted: #6b6560;
+            --accent: #c2410c;
+            --accent-soft: #fff7ed;
+            --radius: 14px;
+            --shadow: 0 4px 20px rgba(26, 24, 22, 0.06);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .bar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ea580c, #c2410c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            font-weight: 700;
+        }
+
+        .brand-text { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+        .brand-text span { color: var(--muted); font-weight: 500; }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav a {
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--muted);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .nav a:hover { background: var(--accent-soft); color: var(--accent); }
+        .nav a.active { background: var(--accent-soft); color: var(--accent); }
+
+        .main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 32px 24px 48px;
+        }
+
+        .page-head {
+            margin-bottom: 24px;
+        }
+
+        .page-head h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .page-head p {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .filter-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .filter-label {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .filter-select {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            min-width: 200px;
+        }
+
+        .table-wrap {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--muted);
+            background: #fafaf9;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: #fafaf9; }
+
+        .amount { font-weight: 600; }
+
+        .empty {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--muted);
+        }
+
+        .empty strong { color: var(--text); display: block; margin-bottom: 6px; }
+
+        .form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+
+        .form-card h2 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 14px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--muted);
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ea580c, #c2410c);
+            color: white;
+        }
+
+        .btn-primary:hover { opacity: 0.9; }
+
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+        .btn-pickup { background: #15803d; color: white; }
+        .btn-pickup:hover:not(:disabled) { opacity: 0.9; }
+        .btn-pickup:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .msg { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-top: 12px; }
+        .msg.success { background: #dcfce7; color: #15803d; }
+        .msg.error { background: #fee2e2; color: #b91c1c; }
+    </style>
+</head>
+<body>
+    <header class="bar">
+        <div class="brand">
+            <div class="brand-icon">CR</div>
+            <div class="brand-text">CarRental <span>· Thuê xe</span></div>
+        </div>
+        <nav class="nav">
+            <a href="/">Trang chủ</a>
+            <a href="/cars">Xe</a>
+            <a href="/bookings" class="active">Đặt xe</a>
+            <a href="/login">Đăng nhập</a>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="page-head">
+            <h1>Danh sách đặt xe</h1>
+            <div class="filter-row">
+                <label class="filter-label">Xem:</label>
+                <select id="filterBookings" class="filter-select">
+                    <option value="">Tất cả đặt xe</option>
+                    <option value="24">Đã kết thúc quá 24h</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <h2>📋 Đặt xe mới</h2>
+            <form id="addBookingForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Khách hàng *</label>
+                        <input type="text" name="customerName" placeholder="Nguyễn Văn A" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Chọn xe *</label>
+                        <select name="carNumber" required id="carNumberSelect">
+                            <option value="">-- Đang tải xe --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày bắt đầu *</label>
+                        <input type="date" name="startDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày kết thúc *</label>
+                        <input type="date" name="endDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button type="submit" class="btn btn-primary">Tạo đặt xe (tự tính tổng tiền)</button>
+                    </div>
+                </div>
+                <div id="bookingMsg"></div>
+            </form>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Khách hàng</th>
+                        <th>Xe</th>
+                        <th>Bắt đầu</th>
+                        <th>Kết thúc</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th>Pick up at</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="bookingsTable">
+                    <tr>
+                        <td colspan="8" class="empty">
+                            <strong>Đang tải...</strong>
+                            Đang gọi /api/bookings
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        function getAuthHeaders() {
+            const token = localStorage.getItem('carRental_token');
+            const h = { 'Content-Type': 'application/json' };
+            if (token) h['Authorization'] = 'Bearer ' + token;
+            return h;
+        }
+        function loadBookings(endedMoreThanHoursAgo) {
+            const url = endedMoreThanHoursAgo
+                ? '/api/bookings?endedMoreThanHoursAgo=' + encodeURIComponent(endedMoreThanHoursAgo)
+                : '/api/bookings';
+            fetch(url)
+                .then(r => r.json())
+                .then(bookings => {
+                    const tbody = document.getElementById('bookingsTable');
+                    if (!Array.isArray(bookings) || bookings.length === 0) {
+                        const msg = endedMoreThanHoursAgo
+                            ? 'Không có đặt xe nào đã kết thúc quá ' + endedMoreThanHoursAgo + ' giờ.'
+                            : 'Chưa có đặt xe. Dùng form trên để tạo đặt xe.';
+                        tbody.innerHTML = '<tr><td colspan="8" class="empty"><strong>' + msg + '</strong></td></tr>';
+                        return;
+                    }
+                    tbody.innerHTML = bookings.map(b => {
+                        const start = new Date(b.startDate).toLocaleDateString('vi-VN');
+                        const end = new Date(b.endDate).toLocaleDateString('vi-VN');
+                        const total = Number(b.totalAmount || 0).toLocaleString('vi-VN');
+                        const status = b.status || 'chờ đón';
+                        const pickupAt = b.pickupAt ? new Date(b.pickupAt).toLocaleString('vi-VN') : '—';
+                        const canPickup = status !== 'đã đón';
+                        return `
+                            <tr>
+                                <td><strong>${escapeHtml(b.customerName)}</strong></td>
+                                <td>${escapeHtml(b.carNumber)}</td>
+                                <td>${start}</td>
+                                <td>${end}</td>
+                                <td class="amount">${total} VND</td>
+                                <td>${escapeHtml(status)}</td>
+                                <td>${pickupAt}</td>
+                                <td>${canPickup ? '<button type="button" class="btn btn-sm btn-pickup" data-booking-id="' + escapeHtml(b._id) + '">Nhận xe</button>' : '—'}</td>
+                            </tr>
+                        `;
+                    }).join('');
+                })
+                .catch(() => {
+                    document.getElementById('bookingsTable').innerHTML = '<tr><td colspan="8" class="empty"><strong>Lỗi tải dữ liệu.</strong> Kiểm tra server và MongoDB.</td></tr>';
+                });
+        }
+
+        function escapeHtml(str) {
+            if (str == null) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        document.getElementById('bookingsTable').addEventListener('click', function (e) {
+            const btn = e.target.closest('.btn-pickup');
+            if (!btn) return;
+            const id = btn.getAttribute('data-booking-id');
+            if (!id) return;
+            btn.disabled = true;
+            fetch('/api/bookings/' + encodeURIComponent(id) + '/pickup', {
+                method: 'PUT',
+                headers: getAuthHeaders()
+            })
+                .then(r => {
+                    if (r.status === 401) {
+                        if (confirm('Bạn cần đăng nhập để nhận xe. Chuyển đến trang đăng nhập?')) window.location.href = '/login';
+                        btn.disabled = false;
+                        return null;
+                    }
+                    return r.json();
+                })
+                .then(data => {
+                    if (data == null) return;
+                    if (data.message) {
+                        alert(data.message);
+                        btn.disabled = false;
+                        return;
+                    }
+                    loadBookings(document.getElementById('filterBookings').value || undefined);
+                })
+                .catch(() => {
+                    alert('Lỗi gọi API.');
+                    btn.disabled = false;
+                });
+        });
+
+        function loadCarsForSelect() {
+            fetch('/api/cars')
+                .then(r => r.json())
+                .then(cars => {
+                    const sel = document.getElementById('carNumberSelect');
+                    sel.innerHTML = '<option value="">-- Chọn xe --</option>' +
+                        (Array.isArray(cars) ? cars.map(c => '<option value="' + c.carNumber + '">' + c.carNumber + ' (' + (c.pricePerDay || 0).toLocaleString('vi-VN') + ' VND/ngày)</option>').join('') : '');
+                })
+                .catch(() => {
+                    document.getElementById('carNumberSelect').innerHTML = '<option value="">Lỗi tải danh sách xe</option>';
+                });
+        }
+
+        loadCarsForSelect();
+        loadBookings();
+
+        document.getElementById('filterBookings').addEventListener('change', function () {
+            loadBookings(this.value || undefined);
+        });
+
+        document.getElementById('addBookingForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const msgEl = document.getElementById('bookingMsg');
+            const fd = new FormData(this);
+            const body = {
+                customerName: fd.get('customerName').trim(),
+                carNumber: fd.get('carNumber'),
+                startDate: fd.get('startDate'),
+                endDate: fd.get('endDate')
+            };
+
+            fetch('/api/bookings', {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: JSON.stringify(body)
+            })
+                .then(r => {
+                    if (r.status === 401) {
+                        if (confirm('Bạn cần đăng nhập để đặt xe. Chuyển đến trang đăng nhập?')) window.location.href = '/login';
+                        return null;
+                    }
+                    return r.json();
+                })
+                .then(data => {
+                    if (!data) return;
+                    if (data.message) {
+                        msgEl.className = 'msg error';
+                        msgEl.textContent = data.message + (data.message.includes('token') ? ' <a href="/login">Đăng nhập</a>' : '');
+                        return;
+                    }
+                    msgEl.className = 'msg success';
+                    msgEl.textContent = 'Đã tạo đặt xe. Tổng tiền: ' + (data.totalAmount || 0).toLocaleString('vi-VN') + ' VND.';
+                    this.reset();
+                    loadBookings(document.getElementById('filterBookings').value || undefined);
+                })
+                .catch(() => {
+                    msgEl.className = 'msg error';
+                    msgEl.textContent = 'Lỗi gửi dữ liệu.';
+                });
+        });
+    </script>
+</body>
+</html>
