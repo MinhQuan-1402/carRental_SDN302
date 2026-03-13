@@ -9,235 +9,193 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #fefdfb;
-            --surface: #ffffff;
-            --border: #ebe7e2;
-            --text: #1a1816;
-            --muted: #6b6560;
-            --accent: #c2410c;
-            --accent-soft: #fff7ed;
-            --radius: 14px;
-            --shadow: 0 4px 20px rgba(26, 24, 22, 0.06);
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.7);
+            --surface-hover: rgba(30, 41, 59, 0.9);
+            --border: rgba(255, 255, 255, 0.1);
+            --border-focus: rgba(249, 115, 22, 0.5);
+            --text-heading: #f8fafc;
+            --text-body: #cbd5e1;
+            --muted: #94a3b8;
+            --accent: #f97316;
+            --accent-hover: #ea580c;
+            --accent-soft: rgba(249, 115, 22, 0.15);
+            --success: #10b981;
+            --success-bg: rgba(16, 185, 129, 0.15);
+            --warn: #eab308;
+            --warn-bg: rgba(234, 179, 8, 0.15);
+            --danger: #ef4444;
+            --danger-bg: rgba(239, 68, 68, 0.15);
+            --radius: 16px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --glass-blur: blur(12px);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
 
         body {
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
             background: var(--bg);
-            color: var(--text);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(249, 115, 22, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-body);
             min-height: 100vh;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         a { color: inherit; text-decoration: none; }
 
         .bar {
-            background: var(--surface);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             border-bottom: 1px solid var(--border);
-            padding: 14px 24px;
+            padding: 16px 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
+        .brand { display: flex; align-items: center; gap: 12px; }
         .brand-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #ea580c, #c2410c);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: white;
-            font-weight: 700;
+            width: 44px; height: 44px; border-radius: 14px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: white; font-weight: 800;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
         }
+        .brand-text { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: var(--text-heading); }
+        .brand-text span { color: var(--accent); font-weight: 500; }
 
-        .brand-text { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
-        .brand-text span { color: var(--muted); font-weight: 500; }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
+        .nav { display: flex; align-items: center; gap: 8px; }
         .nav a {
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--muted);
-            transition: background 0.2s, color 0.2s;
+            padding: 10px 18px; border-radius: 12px; font-size: 14px; font-weight: 600;
+            color: var(--text-body); position: relative; overflow: hidden; z-index: 1;
         }
-
-        .nav a:hover { background: var(--accent-soft); color: var(--accent); }
-        .nav a.active { background: var(--accent-soft); color: var(--accent); }
-
-        .main {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 32px 24px 48px;
+        .nav a::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--accent-soft); border-radius: 12px; z-index: -1;
+            transform: scale(0.8); opacity: 0; transition: transform 0.3s, opacity 0.3s;
         }
+        .nav a:hover { color: var(--accent); }
+        .nav a:hover::before { transform: scale(1); opacity: 1; }
+        .nav a.active { color: var(--accent); background: var(--accent-soft); }
 
-        .page-head {
-            margin-bottom: 24px;
-        }
+        .main { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; animation: fadeIn 0.8s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        .page-head { margin-bottom: 32px; }
         .page-head h1 {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 4px;
+            font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px;
+            color: var(--text-heading); background: linear-gradient(135deg, #fff, #cbd5e1);
+            background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
-        .page-head p {
-            font-size: 14px;
-            color: var(--muted);
-        }
-
-        .filter-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .filter-label {
-            font-size: 14px;
-            color: var(--muted);
-        }
-
+        
+        .filter-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+        .filter-label { font-size: 14px; font-weight: 600; color: var(--muted); }
         .filter-select {
-            padding: 6px 12px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: inherit;
-            min-width: 200px;
+            padding: 10px 16px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border);
+            border-radius: 10px; font-size: 14px; color: var(--text-heading); outline: none; min-width: 220px;
         }
+        .filter-select option { background: #1e293b; color: #f8fafc; }
 
         .table-wrap {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
+            background: var(--surface); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+            overflow: hidden; margin-bottom: 32px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-
-        th, td {
-            padding: 14px 18px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            font-weight: 600;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--muted);
-            background: #fafaf9;
-        }
-
+        table { width: 100%; border-collapse: collapse; font-size: 15px; }
+        th, td { padding: 16px 20px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); background: rgba(15, 23, 42, 0.4); }
         tr:last-child td { border-bottom: none; }
-        tbody tr:hover { background: #fafaf9; }
+        tbody tr { transition: background-color 0.2s; }
+        tbody tr:hover { background: rgba(255, 255, 255, 0.05); }
+        td strong { color: var(--text-heading); font-weight: 600; }
+        .amount { font-weight: 700; color: var(--success); }
 
-        .amount { font-weight: 600; }
-
-        .empty {
-            text-align: center;
-            padding: 48px 24px;
-            color: var(--muted);
+        .car-link {
+            color: var(--accent); font-weight: 600; cursor: pointer; text-decoration: underline; text-decoration-color: transparent;
+            transition: text-decoration-color 0.3s;
         }
+        .car-link:hover { text-decoration-color: var(--accent); }
 
-        .empty strong { color: var(--text); display: block; margin-bottom: 6px; }
+        .empty { text-align: center; padding: 64px 24px; color: var(--muted); }
+        .empty strong { color: var(--text-heading); display: block; margin-bottom: 8px; font-size: 18px; }
 
         .form-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 20px 24px;
-            margin-bottom: 24px;
+            background: var(--surface); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+            padding: 32px; margin-bottom: 32px;
         }
+        .form-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; color: var(--text-heading); display: flex; align-items: center; gap: 12px; }
 
-        .form-card h2 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 14px;
-            align-items: end;
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; align-items: end; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 13px; font-weight: 600; color: var(--muted); }
+        .form-group input, .form-group select {
+            padding: 12px 16px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border);
+            border-radius: 12px; font-size: 15px; color: var(--text-heading); outline: none; font-family: inherit;
         }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .form-group label {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--muted);
-        }
-
-        .form-group input,
-        .form-group select {
-            padding: 8px 12px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: inherit;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
+        .form-group select option { background: #1e293b; color: #f8fafc; }
+        .form-group input:focus, .form-group select:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15); background: rgba(15, 23, 42, 0.8); }
 
         .btn {
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            font-family: inherit;
+            padding: 12px 20px; border-radius: 12px; font-size: 15px; font-weight: 600; border: none; cursor: pointer;
+            font-family: inherit; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; height: 48px;
         }
+        .btn-primary { background: linear-gradient(135deg, #f97316, #ea580c); color: white; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(249, 115, 22, 0.4); }
+        .btn-primary:active { transform: translateY(0); }
+        .btn-sm { padding: 8px 16px; font-size: 13px; height: auto; }
+        .btn-pickup { background: var(--success-bg); color: var(--success); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .btn-pickup:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(16, 185, 129, 0.2); }
+        .btn-pickup:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; background: #1e293b; color: #94a3b8; border-color: transparent;}
+        .btn-cancel { background: rgba(239, 68, 68, 0.15); color: #ef4444; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); margin-left: 8px; }
+        .btn-cancel:hover:not(:disabled) { transform: translateY(-2px); background: #ef4444; color: white; box-shadow: 0 6px 16px rgba(239, 68, 68, 0.2); }
+        .btn-cancel:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; background: #1e293b; color: #94a3b8; border-color: transparent;}
 
-        .btn-primary {
-            background: linear-gradient(135deg, #ea580c, #c2410c);
-            color: white;
+        .msg { padding: 12px 16px; border-radius: 10px; font-size: 14px; margin-top: 16px; display: none; }
+        .msg:not(:empty) { display: block; animation: fadeIn 0.3s; }
+        .msg.success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .msg.error { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
         }
-
-        .btn-primary:hover { opacity: 0.9; }
-
-        .btn-sm { padding: 6px 12px; font-size: 12px; }
-        .btn-pickup { background: #15803d; color: white; }
-        .btn-pickup:hover:not(:disabled) { opacity: 0.9; }
-        .btn-pickup:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        .msg { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-top: 12px; }
-        .msg.success { background: #dcfce7; color: #15803d; }
-        .msg.error { background: #fee2e2; color: #b91c1c; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: rgba(30, 41, 59, 1); border: 1px solid var(--border); border-radius: var(--radius);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5); padding: 32px; width: 100%; max-width: 440px;
+            transform: scale(0.95) translateY(10px); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+        .modal-close {
+            position: absolute; top: 20px; right: 20px; background: none; border: none;
+            color: var(--muted); font-size: 24px; cursor: pointer; transition: color 0.2s;
+        }
+        .modal-close:hover { color: #ef4444; }
+        .modal-title { font-size: 20px; font-weight: 700; color: var(--text-heading); margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+        .car-detail-row { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 15px; border-bottom: 1px dashed rgba(255,255,255,0.05); padding-bottom: 8px;}
+        .car-detail-row:last-child { border-bottom: none; }
+        .car-detail-label { color: var(--muted); font-weight: 500; }
+        .car-detail-value { color: var(--text-heading); font-weight: 600; text-align: right; }
+        .feature-badge {
+            display: inline-block; padding: 4px 10px; background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8; border-radius: 99px; font-size: 12px; font-weight: 600; margin: 4px 4px 0 0; border: 1px solid rgba(56, 189, 248, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -323,6 +281,16 @@
         </div>
     </main>
 
+    <div class="modal-overlay" id="carModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeCarModal">&times;</button>
+            <h3 class="modal-title" id="modalCarTitle">Thông tin xe</h3>
+            <div id="modalCarBody">
+                <div style="text-align: center; color: var(--muted); padding: 20px;">Đang tải...</div>
+            </div>
+        </div>
+    </div>
+
     <script>
         function getAuthHeaders() {
             const token = localStorage.getItem('carRental_token');
@@ -355,13 +323,18 @@
                         return `
                             <tr>
                                 <td><strong>${escapeHtml(b.customerName)}</strong></td>
-                                <td>${escapeHtml(b.carNumber)}</td>
+                                <td><span class="car-link" data-car="${escapeHtml(b.carNumber)}">${escapeHtml(b.carNumber)}</span></td>
                                 <td>${start}</td>
                                 <td>${end}</td>
                                 <td class="amount">${total} VND</td>
                                 <td>${escapeHtml(status)}</td>
                                 <td>${pickupAt}</td>
-                                <td>${canPickup ? '<button type="button" class="btn btn-sm btn-pickup" data-booking-id="' + escapeHtml(b._id) + '">Nhận xe</button>' : '—'}</td>
+                                <td>
+                                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                        ${canPickup ? '<button type="button" class="btn btn-sm btn-pickup" data-booking-id="' + escapeHtml(b._id) + '">Nhận xe</button>' : ''}
+                                        <button type="button" class="btn btn-sm btn-cancel" data-booking-id="${escapeHtml(b._id)}" style="margin-left: 0;">Hủy</button>
+                                    </div>
+                                </td>
                             </tr>
                         `;
                     }).join('');
@@ -379,36 +352,73 @@
         }
 
         document.getElementById('bookingsTable').addEventListener('click', function (e) {
-            const btn = e.target.closest('.btn-pickup');
-            if (!btn) return;
-            const id = btn.getAttribute('data-booking-id');
-            if (!id) return;
-            btn.disabled = true;
-            fetch('/api/bookings/' + encodeURIComponent(id) + '/pickup', {
-                method: 'PUT',
-                headers: getAuthHeaders()
-            })
-                .then(r => {
-                    if (r.status === 401) {
-                        if (confirm('Bạn cần đăng nhập để nhận xe. Chuyển đến trang đăng nhập?')) window.location.href = '/login';
-                        btn.disabled = false;
-                        return null;
-                    }
-                    return r.json();
+            const btnPickup = e.target.closest('.btn-pickup');
+            if (btnPickup) {
+                const id = btnPickup.getAttribute('data-booking-id');
+                if (!id) return;
+                btnPickup.disabled = true;
+                fetch('/api/bookings/' + encodeURIComponent(id) + '/pickup', {
+                    method: 'PUT',
+                    headers: getAuthHeaders()
                 })
-                .then(data => {
-                    if (data == null) return;
-                    if (data.message) {
-                        alert(data.message);
-                        btn.disabled = false;
-                        return;
-                    }
-                    loadBookings(document.getElementById('filterBookings').value || undefined);
+                    .then(r => {
+                        if (r.status === 401) {
+                            if (confirm('Bạn cần đăng nhập để nhận xe. Chuyển đến trang đăng nhập?')) window.location.href = '/login';
+                            btnPickup.disabled = false;
+                            return null;
+                        }
+                        return r.json();
+                    })
+                    .then(data => {
+                        if (data == null) return;
+                        if (data.message && !data._id) {
+                            alert(data.message);
+                            btnPickup.disabled = false;
+                            return;
+                        }
+                        loadBookings(document.getElementById('filterBookings').value || undefined);
+                    })
+                    .catch(() => {
+                        alert('Lỗi gọi API.');
+                        btnPickup.disabled = false;
+                    });
+                return;
+            }
+
+            const btnCancel = e.target.closest('.btn-cancel');
+            if (btnCancel) {
+                if (!confirm('Bạn có chắc chắn muốn hủy đặt xe này không?')) return;
+                const id = btnCancel.getAttribute('data-booking-id');
+                if (!id) return;
+                btnCancel.disabled = true;
+                
+                fetch('/api/bookings/' + encodeURIComponent(id), {
+                    method: 'DELETE',
+                    headers: getAuthHeaders()
                 })
-                .catch(() => {
-                    alert('Lỗi gọi API.');
-                    btn.disabled = false;
-                });
+                    .then(r => {
+                        if (r.status === 401) {
+                            if (confirm('Bạn cần đăng nhập để hủy. Chuyển đến trang đăng nhập?')) window.location.href = '/login';
+                            btnCancel.disabled = false;
+                            return null;
+                        }
+                        return r.json();
+                    })
+                    .then(data => {
+                        if (data == null) return;
+                        if (data.message && !data.booking) {
+                            alert(data.message);
+                            btnCancel.disabled = false;
+                            return;
+                        }
+                        loadBookings(document.getElementById('filterBookings').value || undefined);
+                    })
+                    .catch(() => {
+                        alert('Lỗi gọi API hủy.');
+                        btnCancel.disabled = false;
+                    });
+                return;
+            }
         });
 
         function loadCarsForSelect() {
@@ -471,6 +481,98 @@
                     msgEl.textContent = 'Lỗi gửi dữ liệu.';
                 });
         });
+
+        // Modal Logic
+        const carModal = document.getElementById('carModal');
+        const closeCarModal = document.getElementById('closeCarModal');
+        const modalCarBody = document.getElementById('modalCarBody');
+        const modalCarTitle = document.getElementById('modalCarTitle');
+
+        function openModal() { carModal.classList.add('active'); }
+        function closeModal() { carModal.classList.remove('active'); }
+
+        closeCarModal.addEventListener('click', closeModal);
+        carModal.addEventListener('click', (e) => {
+            if (e.target === carModal) closeModal();
+        });
+
+        document.getElementById('bookingsTable').addEventListener('click', function(e) {
+            const link = e.target.closest('.car-link');
+            if (!link) return;
+            const carNumber = link.getAttribute('data-car');
+            if (!carNumber) return;
+
+            modalCarTitle.textContent = `Thông tin xe: ${carNumber}`;
+            modalCarBody.innerHTML = '<div style="text-align: center; color: var(--muted); padding: 20px;">Đang tải thông tin...</div>';
+            openModal();
+
+            fetch('/api/cars/number/' + encodeURIComponent(carNumber))
+                .then(r => r.json())
+                .then(car => {
+                     if (!car || car.message) {
+                         modalCarBody.innerHTML = `<div style="text-align: center; color: var(--danger); padding: 20px;">${car.message || 'Lỗi tải xe'}</div>`;
+                         return;
+                     }
+                     
+                     const featuresHtml = (Array.isArray(car.features) && car.features.length) 
+                        ? car.features.map(f => `<span class="feature-badge">${escapeHtml(f)}</span>`).join('') 
+                        : '<span style="color: var(--muted)">Không có</span>';
+                     
+                     const statusMap = { 'available': 'Sẵn sàng', 'rented': 'Đang thuê', 'maintenance': 'Bảo trì' };
+                     const statusText = statusMap[car.status] || car.status;
+
+                     modalCarBody.innerHTML = `
+                        <div class="car-detail-row">
+                            <span class="car-detail-label">Số chỗ ngồi</span>
+                            <span class="car-detail-value">${car.capacity}</span>
+                        </div>
+                        <div class="car-detail-row">
+                            <span class="car-detail-label">Giá mỗi ngày</span>
+                            <span class="car-detail-value" style="color: var(--success)">${Number(car.pricePerDay || 0).toLocaleString('vi-VN')} VND</span>
+                        </div>
+                        <div class="car-detail-row">
+                            <span class="car-detail-label">Trạng thái</span>
+                            <span class="car-detail-value">${escapeHtml(statusText)}</span>
+                        </div>
+                        <div class="car-detail-row" style="flex-direction: column; border-bottom: none;">
+                            <span class="car-detail-label" style="margin-bottom: 8px;">Các tiện ích trang bị</span>
+                            <div>${featuresHtml}</div>
+                        </div>
+                     `;
+                })
+                .catch(() => {
+                    modalCarBody.innerHTML = '<div style="text-align: center; color: var(--danger); padding: 20px;">Lỗi kết nối API. Xin thử lại.</div>';
+                });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userStr = localStorage.getItem('carRental_user');
+            if (userStr) {
+                try {
+                    const user = JSON.parse(userStr);
+                    const authLinks = document.querySelectorAll('.nav a[href="/login"]');
+                    authLinks.forEach(link => {
+                        const profileDiv = document.createElement('div');
+                        profileDiv.style.display = 'flex';
+                        profileDiv.style.alignItems = 'center';
+                        profileDiv.style.gap = '12px';
+                        profileDiv.style.marginLeft = '8px';
+                        profileDiv.innerHTML = `
+                            <span style="font-size: 14px; font-weight: 600; color: var(--text-heading); background: var(--surface-hover, rgba(30, 41, 59, 0.9)); padding: 6px 12px; border-radius: 99px; border: 1px solid var(--border, rgba(255,255,255,0.1));">👋 ${user.name || user.email.split('@')[0]}</span>
+                            <button onclick="logout()" style="padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.15); color: #ef4444; transition: all 0.3s;">Đăng xuất</button>
+                        `;
+                        link.replaceWith(profileDiv);
+                    });
+                } catch (e) {}
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('carRental_token');
+            localStorage.removeItem('carRental_user');
+            window.location.reload();
+        }
     </script>
 </body>
 </html>

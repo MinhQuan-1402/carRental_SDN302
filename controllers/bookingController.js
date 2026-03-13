@@ -187,11 +187,6 @@ exports.pickupBooking = async (req, res) => {
     }
 
     const startDate = new Date(booking.startDate);
-    if (now < startDate) {
-      return res.status(400).json({
-        message: `Ngày nhận xe phải lớn hơn hoặc bằng ngày bắt đầu thuê (${startDate.toISOString()}). Hiện tại: ${now.toISOString()}`,
-      });
-    }
 
     if (booking.status === "đã đón") {
       return res.status(400).json({
@@ -225,7 +220,15 @@ exports.deleteBooking = async (req, res) => {
       return res.status(404).json({ message: "Booking not found" });
     }
 
-    res.json({ message: "Booking deleted successfully", booking });
+    // Release the car when canceled
+    if (booking.carNumber) {
+      await Car.findOneAndUpdate(
+        { carNumber: booking.carNumber },
+        { status: "available" }
+      );
+    }
+
+    res.json({ message: "Booking deleted and car released successfully", booking });
   } catch (err) {
     if (err.name === "CastError") {
       return res.status(400).json({ message: "Invalid booking ID" });

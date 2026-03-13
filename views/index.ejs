@@ -9,180 +9,273 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #fefdfb;
-            --surface: #ffffff;
-            --border: #ebe7e2;
-            --text: #1a1816;
-            --muted: #6b6560;
-            --accent: #c2410c;
-            --accent-soft: #fff7ed;
-            --success: #15803d;
-            --warn: #a16207;
-            --radius: 14px;
-            --shadow: 0 4px 20px rgba(26, 24, 22, 0.06);
-            --shadow-hover: 0 12px 32px rgba(26, 24, 22, 0.1);
+            --bg: #0f172a; /* Muted Slate Background */
+            --surface: rgba(30, 41, 59, 0.7); /* Translucent Slate Surface */
+            --border: rgba(255, 255, 255, 0.1);
+            --text-heading: #f8fafc;
+            --text-body: #cbd5e1;
+            --muted: #94a3b8;
+            --accent: #f97316; /* Vibrant Orange */
+            --accent-hover: #ea580c;
+            --accent-soft: rgba(249, 115, 22, 0.15);
+            --radius: 16px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 16px 48px rgba(249, 115, 22, 0.3);
+            --glass-blur: blur(12px);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
 
         body {
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
             background: var(--bg);
-            color: var(--text);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(249, 115, 22, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(249, 115, 22, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-body);
             min-height: 100vh;
-            line-height: 1.5;
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
         a { color: inherit; text-decoration: none; }
 
         .bar {
-            background: var(--surface);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             border-bottom: 1px solid var(--border);
-            padding: 14px 24px;
+            padding: 16px 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .brand-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #ea580c, #c2410c);
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 20px;
             color: white;
-            font-weight: 700;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
         }
 
         .brand-text {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
             letter-spacing: -0.02em;
+            color: var(--text-heading);
         }
 
         .brand-text span {
-            color: var(--muted);
+            color: var(--accent);
             font-weight: 500;
         }
 
         .nav {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .nav a {
-            padding: 8px 14px;
-            border-radius: 10px;
+            padding: 10px 18px;
+            border-radius: 12px;
             font-size: 14px;
-            font-weight: 500;
-            color: var(--muted);
-            transition: background 0.2s, color 0.2s;
+            font-weight: 600;
+            color: var(--text-body);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .nav a::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--accent-soft);
+            border-radius: 12px;
+            z-index: -1;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
         }
 
         .nav a:hover {
-            background: var(--accent-soft);
             color: var(--accent);
+        }
+
+        .nav a:hover::before {
+            transform: scale(1);
+            opacity: 1;
         }
 
         .nav a.active {
-            background: var(--accent-soft);
             color: var(--accent);
+            background: var(--accent-soft);
         }
 
         .main {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 40px 24px 48px;
+            padding: 60px 24px 80px;
         }
 
         .hero {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .hero h1 {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            margin-bottom: 8px;
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            color: var(--text-heading);
+            background: linear-gradient(135deg, #fff, #cbd5e1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            font-size: 16px;
+            font-size: 18px;
             color: var(--muted);
-            max-width: 480px;
+            max-width: 560px;
             margin: 0 auto;
+            line-height: 1.6;
         }
 
         .cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .card {
             background: var(--surface);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 24px;
+            padding: 32px;
             box-shadow: var(--shadow);
-            transition: box-shadow 0.2s, transform 0.2s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: var(--radius);
+            background: radial-gradient(circle at 50% 0%, rgba(249, 115, 22, 0.1), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
         }
 
         .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(249, 115, 22, 0.5);
             box-shadow: var(--shadow-hover);
-            transform: translateY(-2px);
+        }
+
+        .card:hover::after {
+            opacity: 1;
         }
 
         .card-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
             background: var(--accent-soft);
             color: var(--accent);
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            margin-bottom: 14px;
+            font-size: 28px;
+            margin-bottom: 20px;
+            transition: transform 0.4s, background-color 0.4s;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+            background: var(--accent);
+            color: white;
         }
 
         .card h2 {
-            font-size: 17px;
-            font-weight: 600;
-            margin-bottom: 6px;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-heading);
         }
 
         .card p {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--muted);
-            margin-bottom: 14px;
+            margin-bottom: 24px;
+            min-height: 48px;
         }
 
         .card .link {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
             color: var(--accent);
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 99px;
+            background: var(--accent-soft);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .card:hover .link {
+            background: var(--accent);
+            color: white;
         }
 
         .card .link::after {
             content: '→';
+            transition: transform 0.3s;
+        }
+
+        .card:hover .link::after {
+            transform: translateX(4px);
         }
     </style>
 </head>
@@ -221,5 +314,34 @@
             </a>
         </section>
     </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userStr = localStorage.getItem('carRental_user');
+            if (userStr) {
+                try {
+                    const user = JSON.parse(userStr);
+                    const authLinks = document.querySelectorAll('.nav a[href="/login"]');
+                    authLinks.forEach(link => {
+                        const profileDiv = document.createElement('div');
+                        profileDiv.style.display = 'flex';
+                        profileDiv.style.alignItems = 'center';
+                        profileDiv.style.gap = '12px';
+                        profileDiv.style.marginLeft = '8px';
+                        profileDiv.innerHTML = `
+                            <span style="font-size: 14px; font-weight: 600; color: var(--text-heading); background: var(--surface-hover, rgba(30, 41, 59, 0.9)); padding: 6px 12px; border-radius: 99px; border: 1px solid var(--border, rgba(255,255,255,0.1));">👋 ${user.name || user.email.split('@')[0]}</span>
+                            <button onclick="logout()" style="padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.15); color: #ef4444; transition: all 0.3s;">Đăng xuất</button>
+                        `;
+                        link.replaceWith(profileDiv);
+                    });
+                } catch (e) {}
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('carRental_token');
+            localStorage.removeItem('carRental_user');
+            window.location.reload();
+        }
+    </script>
 </body>
 </html>

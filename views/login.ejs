@@ -9,81 +9,160 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #fefdfb;
-            --surface: #ffffff;
-            --border: #ebe7e2;
-            --text: #1a1816;
-            --muted: #6b6560;
-            --accent: #c2410c;
-            --radius: 14px;
-            --shadow: 0 4px 20px rgba(26, 24, 22, 0.06);
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.7);
+            --surface-hover: rgba(30, 41, 59, 0.9);
+            --border: rgba(255, 255, 255, 0.1);
+            --border-focus: rgba(249, 115, 22, 0.5);
+            --text-heading: #f8fafc;
+            --text-body: #cbd5e1;
+            --muted: #94a3b8;
+            --accent: #f97316;
+            --accent-hover: #ea580c;
+            --radius: 20px;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            --glass-blur: blur(16px);
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
         body {
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
             background: var(--bg);
-            color: var(--text);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(249, 115, 22, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(56, 189, 248, 0.1), transparent 25%);
+            color: var(--text-body);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 24px;
         }
-        a { color: var(--accent); text-decoration: none; }
+        a { color: var(--accent); text-decoration: none; font-weight: 500; }
+        a:hover { color: var(--accent-hover); text-decoration: underline; }
+        
         .card {
             background: var(--surface);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            padding: 28px 32px;
+            padding: 40px;
             width: 100%;
-            max-width: 400px;
+            max-width: 440px;
+            animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .card h1 { font-size: 20px; margin-bottom: 20px; }
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--muted); margin-bottom: 6px; }
+        
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .card h1 { 
+            font-size: 24px; 
+            margin-bottom: 24px; 
+            color: var(--text-heading);
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .form-group { margin-bottom: 20px; position: relative; }
+        .form-group label { 
+            display: block; 
+            font-size: 13px; 
+            font-weight: 600; 
+            color: var(--muted); 
+            margin-bottom: 8px; 
+        }
         .form-group input {
             width: 100%;
-            padding: 10px 12px;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.6);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 12px;
+            font-size: 15px;
+            color: var(--text-heading);
+            outline: none;
         }
-        .form-group input:focus { outline: none; border-color: var(--accent); }
+        .form-group input::placeholder { color: #64748b; }
+        .form-group input:focus { 
+            border-color: var(--border-focus); 
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+            background: rgba(15, 23, 42, 0.8);
+        }
+        
         .btn {
             width: 100%;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 14px;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 15px;
             font-weight: 600;
             border: none;
             cursor: pointer;
             font-family: inherit;
-            margin-top: 8px;
+            margin-top: 12px;
+            position: relative;
+            overflow: hidden;
         }
-        .btn-primary { background: linear-gradient(135deg, #ea580c, #c2410c); color: white; }
-        .btn-primary:hover { opacity: 0.9; }
-        .msg { padding: 10px; border-radius: 8px; font-size: 13px; margin-top: 12px; }
-        .msg.success { background: #dcfce7; color: #15803d; }
-        .msg.error { background: #fee2e2; color: #b91c1c; }
-        .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
-        .tabs button {
-            padding: 8px 16px;
+        .btn-primary { 
+            background: linear-gradient(135deg, #f97316, #ea580c); 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+        }
+        .btn-primary:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(249, 115, 22, 0.4);
+        }
+        .btn-primary:active { transform: translateY(0); }
+        
+        .msg { padding: 12px 16px; border-radius: 10px; font-size: 14px; margin-top: 16px; text-align: center; display: none; }
+        .msg:not(:empty) { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .msg.success { background: rgba(20, 184, 166, 0.1); border: 1px solid rgba(20, 184, 166, 0.2); color: #2dd4bf; }
+        .msg.error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #f87171; }
+        
+        .tabs { 
+            display: flex; 
+            gap: 0; 
+            margin-bottom: 32px; 
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+            padding: 4px;
             border: 1px solid var(--border);
-            background: var(--surface);
+        }
+        .tabs button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
             border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
+            font-weight: 600;
+            color: var(--muted);
         }
-        .tabs button.active { background: var(--accent); color: white; border-color: var(--accent); }
-        .panel { display: none; }
+        .tabs button.active { 
+            background: var(--surface-hover); 
+            color: var(--text-heading); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .panel { display: none; animation: slideIn 0.4s ease-out; }
         .panel.active { display: block; }
-        .back { margin-top: 16px; text-align: center; font-size: 14px; color: var(--muted); }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .back { margin-top: 24px; text-align: center; font-size: 14px; color: var(--muted); }
+        .back a { color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+        .back a:hover { color: var(--text-heading); text-decoration: none; }
     </style>
 </head>
 <body>
     <div class="card">
-        <h1>🔐 Xác thực CarRental</h1>
+        <h1>🔐 CarRental</h1>
         <div class="tabs">
             <button type="button" id="tabLogin" class="active">Đăng nhập</button>
             <button type="button" id="tabRegister">Đăng ký</button>
@@ -99,7 +178,7 @@
                     <label>Mật khẩu</label>
                     <input type="password" name="password" placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                <button type="submit" class="btn btn-primary">Đăng nhập tài khoản</button>
                 <div id="loginMsg"></div>
             </form>
         </div>
@@ -115,16 +194,16 @@
                     <input type="email" name="email" placeholder="user@example.com" required>
                 </div>
                 <div class="form-group">
-                    <label>Mật khẩu (tối thiểu 6 ký tự)</label>
+                    <label>Mật khẩu</label>
                     <input type="password" name="password" placeholder="••••••••" required minlength="6">
                 </div>
-                <button type="submit" class="btn btn-primary">Đăng ký</button>
+                <button type="submit" class="btn btn-primary">Tạo tài khoản</button>
                 <div id="registerMsg"></div>
             </form>
         </div>
 
         <div class="back">
-            <a href="/">← Về trang chủ</a>
+            <a href="/">← Quay lại trang chủ</a>
         </div>
     </div>
 
@@ -164,6 +243,7 @@
                     return;
                 }
                 localStorage.setItem('carRental_token', data.token);
+                localStorage.setItem('carRental_user', JSON.stringify(data.user));
                 showMsg(msgEl, 'Đăng nhập thành công. Chuyển về trang chủ...', false);
                 setTimeout(() => { window.location.href = '/'; }, 1000);
             } catch (err) {
@@ -191,6 +271,7 @@
                     return;
                 }
                 localStorage.setItem('carRental_token', data.token);
+                localStorage.setItem('carRental_user', JSON.stringify(data.user));
                 showMsg(msgEl, 'Đăng ký thành công. Chuyển về trang chủ...', false);
                 setTimeout(() => { window.location.href = '/'; }, 1000);
             } catch (err) {
